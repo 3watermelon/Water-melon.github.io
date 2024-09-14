@@ -33,6 +33,17 @@
     
     
     <entry>
+      <title>friends</title>
+      <link href="/friends/index.html"/>
+      <url>/friends/index.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="友链交换"><a href="#友链交换" class="headerlink" title="友链交换"></a>友链交换</h1><p>想要交换友链的小伙伴，欢迎在留言板留言，留言格式：</p><ul><li><strong>名称：</strong>你的博客名称</li><li><strong>地址：</strong>你的博客地址</li><li><strong>简介：</strong>一句话简介</li></ul><p>例如我的博客友链，大家可以加到自己博客里哦：</p><ul><li><strong>名称：</strong>Watermelon</li><li><strong>地址：</strong><a href="https://3watermelon.github.io/Water-melon.github.io/">https://3watermelon.github.io/Water-melon.github.io/</a></li><li><strong>简介：</strong>远方滚来了一个西瓜</li></ul>]]></content>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>关于作者</title>
       <link href="/about/index.html"/>
       <url>/about/index.html</url>
@@ -49,17 +60,6 @@
       <url>/categories/index.html</url>
       
         <content type="html"><![CDATA[]]></content>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>friends</title>
-      <link href="/friends/index.html"/>
-      <url>/friends/index.html</url>
-      
-        <content type="html"><![CDATA[<h1 id="友链交换"><a href="#友链交换" class="headerlink" title="友链交换"></a>友链交换</h1><p>想要交换友链的小伙伴，欢迎在留言板留言，留言格式：</p><ul><li><strong>名称：</strong>你的博客名称</li><li><strong>地址：</strong>你的博客地址</li><li><strong>简介：</strong>一句话简介</li></ul><p>例如我的博客友链，大家可以加到自己博客里哦：</p><ul><li><strong>名称：</strong>Watermelon</li><li><strong>地址：</strong><a href="https://3watermelon.github.io/Water-melon.github.io/">https://3watermelon.github.io/Water-melon.github.io/</a></li><li><strong>简介：</strong>远方滚来了一个西瓜</li></ul>]]></content>
       
     </entry>
     
