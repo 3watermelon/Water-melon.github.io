@@ -5,10 +5,10 @@
     
     <entry>
       <title>内网渗透：DC-1靶机</title>
-      <link href="/Water-melon.github.io/2024/09/14/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%EF%BC%9ADC-1%E9%9D%B6%E6%9C%BA/"/>
-      <url>/Water-melon.github.io/2024/09/14/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%EF%BC%9ADC-1%E9%9D%B6%E6%9C%BA/</url>
+      <link href="/2024/09/14/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%EF%BC%9ADC-1%E9%9D%B6%E6%9C%BA/"/>
+      <url>/2024/09/14/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%EF%BC%9ADC-1%E9%9D%B6%E6%9C%BA/</url>
       
-        <content type="html"><![CDATA[<h1 id="渗透环境"><a href="#渗透环境" class="headerlink" title="渗透环境"></a>渗透环境</h1><h3 id="攻击机Kali（Linux）-IP：192-168-211-1"><a href="#攻击机Kali（Linux）-IP：192-168-211-1" class="headerlink" title="攻击机Kali（Linux） IP：192.168.211.1"></a>攻击机Kali（Linux） IP：192.168.211.1</h3><h3 id="靶机：DC-1-ovk（Linux）-IP：未知"><a href="#靶机：DC-1-ovk（Linux）-IP：未知" class="headerlink" title="靶机：DC-1.ovk（Linux）  IP：未知"></a>靶机：DC-1.ovk（Linux）  IP：未知</h3><h3 id="首先导入DC-1靶机到VM中，并且开启靶机"><a href="#首先导入DC-1靶机到VM中，并且开启靶机" class="headerlink" title="首先导入DC-1靶机到VM中，并且开启靶机"></a>首先导入DC-1靶机到VM中，并且开启靶机</h3><h3 id="将靶机与攻击机设置在同一网段下，这样靶机才能被攻击机扫描到，可以同时设置为桥接或者NAT模式。"><a href="#将靶机与攻击机设置在同一网段下，这样靶机才能被攻击机扫描到，可以同时设置为桥接或者NAT模式。" class="headerlink" title="将靶机与攻击机设置在同一网段下，这样靶机才能被攻击机扫描到，可以同时设置为桥接或者NAT模式。"></a>将靶机与攻击机设置在同一网段下，这样靶机才能被攻击机扫描到，可以同时设置为桥接或者NAT模式。</h3><h1 id="一、检测同一网段下的IP"><a href="#一、检测同一网段下的IP" class="headerlink" title="一、检测同一网段下的IP"></a>一、检测同一网段下的IP</h1><h2 id="使用工具arp-scan"><a href="#使用工具arp-scan" class="headerlink" title="使用工具arp-scan"></a>使用工具arp-scan</h2><h3 id="扫描当前网段所有IP："><a href="#扫描当前网段所有IP：" class="headerlink" title="扫描当前网段所有IP："></a>扫描当前网段所有IP：</h3><p><code>arp-scan -l</code></p>]]></content>
+        <content type="html"><![CDATA[<h1 id="渗透环境"><a href="#渗透环境" class="headerlink" title="渗透环境"></a>渗透环境</h1><h3 id="攻击机Kali（Linux）-IP：192-168-211-1"><a href="#攻击机Kali（Linux）-IP：192-168-211-1" class="headerlink" title="攻击机Kali（Linux） IP：192.168.211.1"></a>攻击机Kali（Linux） IP：192.168.211.1</h3><h3 id="靶机：DC-1-ovk（Linux）-IP：未知"><a href="#靶机：DC-1-ovk（Linux）-IP：未知" class="headerlink" title="靶机：DC-1.ovk（Linux）  IP：未知"></a>靶机：DC-1.ovk（Linux）  IP：未知</h3><h3 id="首先导入DC-1靶机到VM中，并且开启靶机"><a href="#首先导入DC-1靶机到VM中，并且开启靶机" class="headerlink" title="首先导入DC-1靶机到VM中，并且开启靶机"></a>首先导入DC-1靶机到VM中，并且开启靶机</h3><h3 id="将靶机与攻击机设置在同一网段下，这样靶机才能被攻击机扫描到，可以同时设置为桥接或者NAT模式。"><a href="#将靶机与攻击机设置在同一网段下，这样靶机才能被攻击机扫描到，可以同时设置为桥接或者NAT模式。" class="headerlink" title="将靶机与攻击机设置在同一网段下，这样靶机才能被攻击机扫描到，可以同时设置为桥接或者NAT模式。"></a>将靶机与攻击机设置在同一网段下，这样靶机才能被攻击机扫描到，可以同时设置为桥接或者NAT模式。</h3><h1 id="一、检测同一网段下的IP"><a href="#一、检测同一网段下的IP" class="headerlink" title="一、检测同一网段下的IP"></a>一、检测同一网段下的IP</h1><h2 id="使用工具arp-scan"><a href="#使用工具arp-scan" class="headerlink" title="使用工具arp-scan"></a>使用工具arp-scan</h2><h3 id="扫描当前网段所有IP："><a href="#扫描当前网段所有IP：" class="headerlink" title="扫描当前网段所有IP："></a>扫描当前网段所有IP：</h3><p><code>arp-scan -l</code><br><img src="/2024/09/14/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%EF%BC%9ADC-1%E9%9D%B6%E6%9C%BA/_posts/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%EF%BC%9ADC-1%E9%9D%B6%E6%9C%BA/1.png" alt="1"></p>]]></content>
       
       
       
@@ -18,8 +18,8 @@
     
     <entry>
       <title>Hello World</title>
-      <link href="/Water-melon.github.io/2024/09/13/hello-world/"/>
-      <url>/Water-melon.github.io/2024/09/13/hello-world/</url>
+      <link href="/2024/09/13/hello-world/"/>
+      <url>/2024/09/13/hello-world/</url>
       
         <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content>
       
@@ -33,42 +33,20 @@
     
     
     <entry>
-      <title>关于作者</title>
-      <link href="/Water-melon.github.io/about/index.html"/>
-      <url>/Water-melon.github.io/about/index.html</url>
-      
-        <content type="html"><![CDATA[]]></content>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>分类</title>
-      <link href="/Water-melon.github.io/categories/index.html"/>
-      <url>/Water-melon.github.io/categories/index.html</url>
-      
-        <content type="html"><![CDATA[]]></content>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>friends</title>
-      <link href="/Water-melon.github.io/friends/index.html"/>
-      <url>/Water-melon.github.io/friends/index.html</url>
-      
-        <content type="html"><![CDATA[<h1 id="友链交换"><a href="#友链交换" class="headerlink" title="友链交换"></a>友链交换</h1><p>想要交换友链的小伙伴，欢迎在留言板留言，留言格式：</p><ul><li><strong>名称：</strong>你的博客名称</li><li><strong>地址：</strong>你的博客地址</li><li><strong>简介：</strong>一句话简介</li></ul><p>例如我的博客友链，大家可以加到自己博客里哦：</p><ul><li><strong>名称：</strong>Watermelon</li><li><strong>地址：</strong><a href="https://3watermelon.github.io/Water-melon.github.io/">https://3watermelon.github.io/Water-melon.github.io/</a></li><li><strong>简介：</strong>远方滚来了一个西瓜</li></ul>]]></content>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>友情链接</title>
-      <link href="/Water-melon.github.io/link/index.html"/>
-      <url>/Water-melon.github.io/link/index.html</url>
+      <link href="/link/index.html"/>
+      <url>/link/index.html</url>
+      
+        <content type="html"><![CDATA[]]></content>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>关于作者</title>
+      <link href="/about/index.html"/>
+      <url>/about/index.html</url>
       
         <content type="html"><![CDATA[]]></content>
       
@@ -78,8 +56,30 @@
     
     <entry>
       <title>标签</title>
-      <link href="/Water-melon.github.io/tags/index.html"/>
-      <url>/Water-melon.github.io/tags/index.html</url>
+      <link href="/tags/index.html"/>
+      <url>/tags/index.html</url>
+      
+        <content type="html"><![CDATA[]]></content>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>friends</title>
+      <link href="/friends/index.html"/>
+      <url>/friends/index.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="友链交换"><a href="#友链交换" class="headerlink" title="友链交换"></a>友链交换</h1><p>想要交换友链的小伙伴，欢迎在留言板留言，留言格式：</p><ul><li><strong>名称：</strong>你的博客名称</li><li><strong>地址：</strong>你的博客地址</li><li><strong>简介：</strong>一句话简介</li></ul><p>例如我的博客友链，大家可以加到自己博客里哦：</p><ul><li><strong>名称：</strong>Watermelon</li><li><strong>地址：</strong><a href="https://3watermelon.github.io/Water-melon.github.io/">https://3watermelon.github.io/Water-melon.github.io/</a></li><li><strong>简介：</strong>远方滚来了一个西瓜</li></ul>]]></content>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>分类</title>
+      <link href="/categories/index.html"/>
+      <url>/categories/index.html</url>
       
         <content type="html"><![CDATA[]]></content>
       
